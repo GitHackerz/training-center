@@ -6,53 +6,51 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const generateJWT = require("../utils/generateJWT");
 
-const getAllUsers = asyncWrapper(async (req,res) => {
+const getAllUsers = asyncWrapper(async (req, res) => {
 
-   /*  const query = req.query;
+    /*  const query = req.query;
 
-    const limit = query.limit || 10;
-    const page = query.page || 1;
-    const skip = (page - 1) * limit; */
+     const limit = query.limit || 10;
+     const page = query.page || 1;
+     const skip = (page - 1) * limit; */
 
     // get all courses) from DB using Course Model
-    const users = await User.find({}, {"__v": false, 'password': false})
-    const total=User.count()
+    const users = await User.find({}, {"__v": false, 'password': false}).populate('parcour');
+    const total = User.count()
     res.append('X-Total-Count', total);
 
     res.append('Access-Control-Expose-Headers', 'X-Total-Count');
 
-    res.json({ status:httpStatusText.SUCCESS, users})
+    res.json({status: httpStatusText.SUCCESS, users})
 })
 const update_user = asyncWrapper(async (req, res, next) => {
-    const updated = await User.updateOne(
-      { _id: req.body._id },
-      {
-        $set: {
-          ...req.body,
-        },
-      }
+    const updated = await User.updateOne({_id: req.body._id}, {
+            $set: {
+                ...req.body,
+            },
+        }
     );
-  
-    return res
-      .status(200)
-      .json({ status: httpStatusText.SUCCESS, data: { user: updated } });
-  });
-  const delete_user = asyncWrapper(async (req, res, next) => {
-    const id = req.params.id;
- 
-    await User.findByIdAndDelete({ _id: id });
-    return res.status(200).json({ status: httpStatusText.SUCCESS, data: null });
-  });
 
-  const get_one_user = asyncWrapper(async (req, res, next) => {
+    return res
+        .status(200)
+        .json({status: httpStatusText.SUCCESS, data: {user: updated}});
+});
+const delete_user = asyncWrapper(async (req, res, next) => {
+    const id = req.params.id;
+
+    await User.findByIdAndDelete({_id: id});
+    return res.status(200).json({status: httpStatusText.SUCCESS, data: null});
+});
+
+const get_one_user = asyncWrapper(async (req, res, next) => {
     const carREG = req.params.id;
-    const car = await User.findOne({ regisNB: carREG }).populate(
-      "groupe parcour"
+    const car = await User.findOne({regisNB: carREG}).populate(
+        "groupe parcour"
     );
-  
+
     if (!car) {
-      const error = appError.create("car dont exist", 404, httpStatusText.FAIL);
-      return next(error);
+        const error = appError.create("car dont exist", 404, httpStatusText.FAIL);
+        return next(error);
     }
     /*   const checkmiss=await Mission.find({car:carid})
     console.log(checkmiss)
@@ -60,15 +58,15 @@ const update_user = asyncWrapper(async (req, res, next) => {
   const mission=checkmiss
    car.missions=mission
     } */
-  
-    res.json({ status: httpStatusText.SUCCESS, data: { car } });
-  });
+
+    res.json({status: httpStatusText.SUCCESS, data: {car}});
+});
 const register = asyncWrapper(async (req, res, next) => {
-    const { firstName, lastName, email, password,role } = req.body;
+    const {firstName, lastName, email, password, role} = req.body;
 
-    const oldUser = await User.findOne({ email: email});
+    const oldUser = await User.findOne({email: email});
 
-    if(oldUser) {
+    if (oldUser) {
         const error = appError.create('user already exists', 400, httpStatusText.FAIL)
         return next(error);
     }
@@ -93,7 +91,6 @@ const register = asyncWrapper(async (req, res, next) => {
     await newUser.save();
 
 
-
     res.status(201).json({status: httpStatusText.SUCCESS, data: {user: newUser}})
 
 
@@ -103,26 +100,26 @@ const register = asyncWrapper(async (req, res, next) => {
 const login = asyncWrapper(async (req, res, next) => {
     const {email, password} = req.body;
 
-    if(!email && !password) {
+    if (!email && !password) {
         const error = appError.create('email and password are required', 400, httpStatusText.FAIL)
         return next(error);
     }
 
     const user = await User.findOne({email: email});
 
-    if(!user) {
+    if (!user) {
         const error = appError.create('user not found', 400, httpStatusText.FAIL)
         return next(error);
     }
 
     const matchedPassword = await bcrypt.compare(password, user.password);
 
-    if(user && matchedPassword) {
+    if (user && matchedPassword) {
         // logged in successfully
 
-       const token = await generateJWT({email: user.email, id: user._id, role: user.role});
+        const token = await generateJWT({email: user.email, id: user._id, role: user.role});
 
-        return res.json({ status: httpStatusText.SUCCESS, data: {token}});
+        return res.json({status: httpStatusText.SUCCESS, data: {token}});
     } else {
         const error = appError.create('something wrong', 500, httpStatusText.ERROR)
         return next(error);

@@ -1,24 +1,31 @@
-
 const express = require('express');
+
+const parcourController = require('../controllers/parcour.controller');
+const userRoles = require('../utils/userRoles');
+const verifyToken = require('../middleware/verfiyToken');
+const allowedTo = require('../middleware/allowedTo');
 
 const router = express.Router();
 
-const parcourController = require('../controllers/parcour.controller');
-
-
-const verifyToken = require('../middleware/verfiyToken');
-const userRoles = require('../utils/userRoles');
-const allowedTo = require('../middleware/allowedTo');
-
-
-router.route('/')
-            .get(parcourController)
-            .post(verifyToken, /* allowedTo(userRoles.MANGER), */ parcourController.addParcour);
-
-
-router.route('/:courseId')
-            .get(parcourController.getCourse)
-            .delete(verifyToken, /* allowedTo(userRoles.ADMIN, userRoles.MANGER), */ parcourController.deleteParcour);
-
+router.get(
+    '/',
+    verifyToken, allowedTo([userRoles.ADMIN, userRoles.FORMATEUR, userRoles.CONCEPTEUR, userRoles.SCOLARITE]),
+    parcourController.getParcours
+);
+router.get(
+    '/:parID',
+    verifyToken, allowedTo([userRoles.ADMIN, userRoles.FORMATEUR, userRoles.CONCEPTEUR, userRoles.SCOLARITE]),
+    parcourController.getParcour
+);
+router.post(
+    '/',
+    verifyToken, allowedTo([userRoles.ADMIN, userRoles.CONCEPTEUR]),
+    parcourController.addParcour
+);
+router.delete(
+    '/:parID',
+    verifyToken, allowedTo([userRoles.ADMIN, userRoles.CONCEPTEUR]),
+    parcourController.deleteParcour
+);
 
 module.exports = router;

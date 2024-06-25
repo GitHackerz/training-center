@@ -1,4 +1,3 @@
-
 const express = require('express');
 
 const router = express.Router();
@@ -42,12 +41,12 @@ const appError = require('../utils/appError');
 // login
 
 router.route('/')
-            .get(usersController.getAllUsers)
+    .get(usersController.getAllUsers)
 
 router.route('/register')
-            .post(usersController.register)
+    .post(usersController.register)
 
 router.route('/login')
-            .post(usersController.login)
+    .post(usersController.login)
 
 module.exports = router;

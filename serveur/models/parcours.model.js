@@ -1,21 +1,21 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const {Schema, model} = require('mongoose');
 
-const parcourSchema = new mongoose.Schema({
+const parcourSchema = new Schema({
     title: {
         type: String,
         required: true
     },
     course: [{
-        type: ObjectId,
-        ref: "course",
+        title: {
+            type: String,
+            required: true
+        },
+        file:{
+            type: String,
+            default:"uploads/course.pdf"
+        }
     }],
-  
-},
-{
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },)
 
+})
 
-module.exports = mongoose.model('parcour', parcourSchema);
+module.exports = model('Parcour', parcourSchema);

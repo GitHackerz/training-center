@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const {Schema, model} = require('mongoose');
 const userRoles = require('../utils/userRoles');
-const ObjectId = mongoose.Schema.Types.ObjectId;
-const userSchema = new mongoose.Schema({
+const ObjectId = Schema.Types.ObjectId;
+
+const userSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-    /*     validate: [validator.isEmail , 'filed must be a valid email address'] */
     },
     password: {
         type: String,
@@ -25,20 +24,16 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     role: {
-        type: String, // ["USER", "ADMIN", "MANAGER"]
+        type: String,
         enum: [userRoles.APPRENANT, userRoles.ADMIN, userRoles.CONCEPTEUR, userRoles.FORMATEUR, userRoles.SCOLARITE],
         default: userRoles.APPRENANT
     },
-    groupe:{
-        type: ObjectId,
-        ref: "group",
-    },
-    parcour:{
-        type: ObjectId,
-        ref: "parcour",
-    },
-    
-
+    parcours: [
+        {
+            ref: "parcour",
+            type: ObjectId,
+        }
+    ]
 })
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = model('user', userSchema);
