@@ -40,7 +40,7 @@ const ParcoursFormP = ({type = 'NEW'}) => {
                 <div className="newContainer">
                     <Navbar/>
                     <div className="top">
-                        <h1>{type === 'NEW' ? 'Create New Course' : 'Update Course'}</h1>
+                        <h1>{type === 'NEW' ? 'Create New Parcour' : 'Update Parcour'}</h1>
                     </div>
                     <div className="bottom">
                         <div className="right">

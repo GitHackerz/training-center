@@ -12,7 +12,7 @@ const parcoursSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
 });
 
-export default function CourseFormC({ course, type = 'NEW', parcourId }) {
+export default function     CourseFormC({ course, type = 'NEW', parcourId }) {
     const navigate = useNavigate();
     const {
         register,
