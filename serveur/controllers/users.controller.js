@@ -7,23 +7,11 @@ const jwt = require('jsonwebtoken');
 const generateJWT = require("../utils/generateJWT");
 
 const getAllUsers = asyncWrapper(async (req, res) => {
-
-    /*  const query = req.query;
-
-     const limit = query.limit || 10;
-     const page = query.page || 1;
-     const skip = (page - 1) * limit; */
-
-    // get all courses) from DB using Course Model
-    const users = await User.find({}, {"__v": false, 'password': false}).populate('parcour');
-    const total = User.count()
-    res.append('X-Total-Count', total);
-
-    res.append('Access-Control-Expose-Headers', 'X-Total-Count');
-
+    const users = await User.find({}, {"__v": false, 'password': false}).populate('parcours');
     res.json({status: httpStatusText.SUCCESS, users})
 })
-const update_user = asyncWrapper(async (req, res, next) => {
+
+const updateUser = asyncWrapper(async (req, res) => {
     const updated = await User.updateOne({_id: req.body._id}, {
             $set: {
                 ...req.body,
@@ -35,32 +23,20 @@ const update_user = asyncWrapper(async (req, res, next) => {
         .status(200)
         .json({status: httpStatusText.SUCCESS, data: {user: updated}});
 });
-const delete_user = asyncWrapper(async (req, res, next) => {
-    const id = req.params.id;
 
-    await User.findByIdAndDelete({_id: id});
+const deleteUser = asyncWrapper(async (req, res, next) => {
+    const {id} = req.params;
+
+    await User.deleteOne({_id: id});
     return res.status(200).json({status: httpStatusText.SUCCESS, data: null});
 });
 
-const get_one_user = asyncWrapper(async (req, res, next) => {
-    const carREG = req.params.id;
-    const car = await User.findOne({regisNB: carREG}).populate(
-        "groupe parcour"
-    );
+const getUser = asyncWrapper(async (req, res) => {
+    const {id} = req.params;
+    const user = await User.findById(id, {"__v": false, 'password': false}).populate('parcours');
+    return res.status(200).json({status: httpStatusText.SUCCESS, data: {user}});
+})
 
-    if (!car) {
-        const error = appError.create("car dont exist", 404, httpStatusText.FAIL);
-        return next(error);
-    }
-    /*   const checkmiss=await Mission.find({car:carid})
-    console.log(checkmiss)
-    if(checkmiss){
-  const mission=checkmiss
-   car.missions=mission
-    } */
-
-    res.json({status: httpStatusText.SUCCESS, data: {car}});
-});
 const register = asyncWrapper(async (req, res, next) => {
     const {firstName, lastName, email, password, role} = req.body;
 
@@ -74,7 +50,6 @@ const register = asyncWrapper(async (req, res, next) => {
     // password hashing
     const hashedPassword = await bcrypt.hash(password, 10);
 
-
     const newUser = new User({
         firstName,
         lastName,
@@ -87,13 +62,9 @@ const register = asyncWrapper(async (req, res, next) => {
     const token = await generateJWT({email: newUser.email, id: newUser._id, role: newUser.role});
     newUser.token = token;
 
-
     await newUser.save();
 
-
     res.status(201).json({status: httpStatusText.SUCCESS, data: {user: newUser}})
-
-
 })
 
 
@@ -130,8 +101,9 @@ const login = asyncWrapper(async (req, res, next) => {
 
 module.exports = {
     getAllUsers,
+    getUser,
     register,
     login,
-    delete_user,
-    update_user
+    deleteUser,
+    updateUser
 }

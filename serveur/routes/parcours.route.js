@@ -7,25 +7,13 @@ const allowedTo = require('../middleware/allowedTo');
 
 const router = express.Router();
 
-router.get(
-    '/',
-    verifyToken, allowedTo([userRoles.ADMIN, userRoles.FORMATEUR, userRoles.CONCEPTEUR, userRoles.SCOLARITE]),
-    parcourController.getParcours
-);
-router.get(
-    '/:parID',
-    verifyToken, allowedTo([userRoles.ADMIN, userRoles.FORMATEUR, userRoles.CONCEPTEUR, userRoles.SCOLARITE]),
-    parcourController.getParcour
-);
-router.post(
-    '/',
-    verifyToken, allowedTo([userRoles.ADMIN, userRoles.CONCEPTEUR]),
-    parcourController.addParcour
-);
-router.delete(
-    '/:parID',
-    verifyToken, allowedTo([userRoles.ADMIN, userRoles.CONCEPTEUR]),
-    parcourController.deleteParcour
-);
+router.get('/', parcourController.getParcours);
+router.post('/', parcourController.addParcour);
+router.put('/:parID', parcourController.updateParcour);
+router.get('/:parID', parcourController.getParcour)
+router.delete('/:parID', parcourController.deleteParcour);
+router.get('/:parID/courses/:courseID', parcourController.getCourse);
+router.post('/:parID/courses', parcourController.addCourse);
+router.delete('/:parID/courses/:courseID', parcourController.deleteCourse);
 
 module.exports = router;

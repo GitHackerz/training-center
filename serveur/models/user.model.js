@@ -30,7 +30,7 @@ const userSchema = new Schema({
     },
     parcours: [
         {
-            ref: "parcour",
+            ref: "Parcour",
             type: ObjectId,
         }
     ]
