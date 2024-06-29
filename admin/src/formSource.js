@@ -1,77 +1,96 @@
 export const userInputs = [
     {
-      id: 1,
-      label: "Username",
-      type: "text",
-      placeholder: "john_doe",
+        id: 1,
+        label: "First Name",
+        name: "firstName",
+        type: "text",
+        placeholder: "John",
     },
     {
-      id: 2,
-      label: "Name and surname",
-      type: "text",
-      placeholder: "John Doe",
+        id: 2,
+        label: "Last Name",
+        name: "lastName",
+        type: "text",
+        placeholder: "Doe",
     },
     {
-      id: 3,
-      label: "Email",
-      type: "mail",
-      placeholder: "john_doe@gmail.com",
+        id: 3,
+        label: "Email",
+        name: "email",
+        type: "email",
+        placeholder: "john.doe@example.com",
     },
     {
-      id: 4,
-      label: "Phone",
-      type: "text",
-      placeholder: "+1 234 567 89",
+        id: 4,
+        label: "Password",
+        name: "password",
+        type: "password",
+        placeholder: "password",
     },
     {
-      id: 5,
-      label: "Password",
-      type: "password",
+        id: 5,
+        label: "Role",
+        name: "role",
+        type: "text",
+        placeholder: "APPRENANT",
+    },
+];
+
+export const parcourseInputs = [
+    {
+        id: 1,
+        label: "Title",
+        name: "title",
+        type: "text",
+        placeholder: "Title",
     },
     {
-      id: 6,
-      label: "Address",
-      type: "text",
-      placeholder: "Elton St. 216 NewYork",
+        id: 2,
+        label: "Description",
+        name: "description",
+        type: "text",
+        placeholder: "Description",
     },
     {
-      id: 7,
-      label: "Country",
-      type: "text",
-      placeholder: "USA",
-    },
-  ];
-  
-  export const productInputs = [
-    {
-      id: 1,
-      label: "Title",
-      type: "text",
-      placeholder: "Apple Macbook Pro",
+        id: 3,
+        label: "Duration",
+        name: "duration",
+        type: "number",
+        placeholder: "Duration",
     },
     {
-      id: 2,
-      label: "Description",
-      type: "text",
-      placeholder: "Description",
+        id: 4,
+        label: "Price",
+        name: "price",
+        type: "number",
+        placeholder: "Price",
     },
     {
-      id: 3,
-      label: "Category",
-      type: "text",
-      placeholder: "Computers",
+        id: 5,
+        label: "Category",
+        name: "category",
+        type: "text",
+        placeholder: "Category",
+    },
+];
+
+export const courseInputs = [
+    {
+        id: 1,
+        label: "Title",
+        name: "title",
+        type: "text",
+        placeholder: "Title",
     },
     {
-      id: 4,
-      label: "Price",
-      type: "text",
-      placeholder: "100",
+        id: 2,
+        label: "File",
+        name: "file",
+        type: "file",
+        placeholder: "File",
     },
-    {
-      id: 5,
-      label: "Stock",
-      type: "text",
-      placeholder: "in stock",
-    },
-  ];
+];
+
+
+
   
