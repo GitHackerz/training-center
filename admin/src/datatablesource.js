@@ -34,13 +34,8 @@ export const parcoursColumns = [
         width: 230,
     },
     {
-        field: "description",
-        headerName: "Description",
-        width: 230,
-    },
-    {
-        field: "duration",
-        headerName: "Duration",
+        field: "category",
+        headerName: "Category",
         width: 200,
     },
     {
@@ -54,6 +49,16 @@ export const parcoursColumns = [
                 </div>
             );
         },
+    },
+    {
+        field: "startDate",
+        headerName: "Start Date",
+        width: 200,
+    },
+    {
+        field: "endDate",
+        headerName: "End Date",
+        width: 200,
     },
 ];
 

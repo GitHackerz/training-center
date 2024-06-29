@@ -20,10 +20,6 @@ const parcourSchema = new Schema({
         type: String,
         required: true
     },
-    duration: {
-        type: Number,
-        required: true
-    },
     price: {
         type: Number,
         required: true
@@ -32,8 +28,15 @@ const parcourSchema = new Schema({
         type: String,
         required: true
     },
-    courses: [courseSchema],
-
+    startDate: {
+        type: Date,
+        default: Date.now()
+    },
+    endDate: {
+        type: Date,
+        default: Date.now() + 1000*60*60*24*30
+    },
+    courses: [courseSchema]
 })
 
 module.exports = model('Parcour', parcourSchema);

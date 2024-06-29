@@ -14,8 +14,9 @@
       display: flex;
 
       h1 {
-        color: lightgray;
-        font-size: 20px;
+        color: #555555;
+        font-size: 24px;
+        font-weight: 800;
       }
 
       .left {
@@ -32,6 +33,9 @@
 
       .right {
         flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         form {
           display: flex;
@@ -58,17 +62,24 @@
               border: none;
               border-bottom: 1px solid gray;
             }
+
+            p {
+              color: red;
+              font-size: 12px;
+              margin-top: 5px;
+            }
           }
 
           button {
-            width: 150px;
+            width: 100%;
             padding: 10px;
+            background-color: #3459a3;
             border: none;
-            background-color: teal;
-            color: white;
-            font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 20px;
           }
         }
       }

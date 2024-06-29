@@ -11,8 +11,8 @@ import {useNavigate} from "react-router-dom";
 const parcoursSchema = z.object({
     title: z.string().min(1, {message: "Title is required"}),
     description: z.string().min(1, {message: "Description is required"}),
-    duration: z.number().min(1, {message: "Duration is required"}),
-    price: z.number().min(1, {message: "Price is required"}),
+    duration: z.string().min(1, {message: "Duration is required"}),
+    price: z.string().min(1, {message: "Price is required"}),
     category: z.string().min(1, {message: "Category is required"}),
 });
 

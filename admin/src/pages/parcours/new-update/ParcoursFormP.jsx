@@ -21,7 +21,7 @@ const ParcoursFormP = ({type = 'NEW'}) => {
 
     const getParcour = async () => {
         const res = await axios.get(`${ServerUrl}/parcours/${parcoursId}`)
-        setParcours(res.data.data.parcour)
+        setParcours(res.data.parcour)
     }
 
     useEffect(() => {

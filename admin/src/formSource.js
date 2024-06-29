@@ -53,24 +53,31 @@ export const parcourseInputs = [
     },
     {
         id: 3,
-        label: "Duration",
-        name: "duration",
-        type: "number",
-        placeholder: "Duration",
-    },
-    {
-        id: 4,
         label: "Price",
         name: "price",
         type: "number",
         placeholder: "Price",
     },
     {
-        id: 5,
+        id: 4,
         label: "Category",
         name: "category",
         type: "text",
         placeholder: "Category",
+    },
+    {
+        id: 5,
+        label: "Start Date",
+        name: "startDate",
+        type: "date",
+        placeholder: "Start Date",
+    },
+    {
+        id: 6,
+        label: "End Date",
+        name: "endDate",
+        type: "date",
+        placeholder: "End Date",
     },
 ];
 
