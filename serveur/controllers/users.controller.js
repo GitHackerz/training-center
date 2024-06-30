@@ -34,7 +34,7 @@ const deleteUser = asyncWrapper(async (req, res, next) => {
 const getUser = asyncWrapper(async (req, res) => {
     const {id} = req.params;
     const user = await User.findById(id, {"__v": false, 'password': false}).populate('parcours');
-    return res.status(200).json({status: httpStatusText.SUCCESS, data: {user}});
+    return res.status(200).json({status: httpStatusText.SUCCESS, user});
 })
 
 const register = asyncWrapper(async (req, res, next) => {
@@ -98,6 +98,36 @@ const login = asyncWrapper(async (req, res, next) => {
 
 })
 
+const addParcour = asyncWrapper(async (req, res, next) => {
+    const {userId, parcourId} = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+        const error = appError.create('user not found', 400, httpStatusText.FAIL)
+        return next(error);
+    }
+
+    user.parcours.push(parcourId);
+    await user.save();
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'parcour added'})
+})
+
+const removeParcour = asyncWrapper(async (req, res, next) => {
+    const {userId, parcourId} = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) {
+        const error = appError.create('user not found', 400, httpStatusText.FAIL)
+        return next(error);
+    }
+    user.parcours = user.parcours.filter(p => {
+        return p.toString() !== parcourId.toString()
+    });
+    await user.save();
+    res.status(200).json({status: httpStatusText.SUCCESS, message: 'parcour removed'})
+
+})
+
 
 module.exports = {
     getAllUsers,
@@ -105,5 +135,7 @@ module.exports = {
     register,
     login,
     deleteUser,
-    updateUser
+    updateUser,
+    addParcour,
+    removeParcour
 }

@@ -49,7 +49,7 @@ const getCourse = asyncWrapper(async (req, res) => {
     res.status(200).json({status: httpStatusText.SUCCESS, course});
 })
 
-const addCourse = asyncWrapper(async (req, res) => {
+const addCourse = asyncWrapper(async (req, res, next) => {
     const parcour = await Parcour.findById(req.params.parID);
     if (!parcour) {
         const error = appError.create("Not found", 404, httpStatusText.FAIL);
@@ -60,7 +60,7 @@ const addCourse = asyncWrapper(async (req, res) => {
     res.status(201).json({status: httpStatusText.SUCCESS, parcour});
 })
 
-const deleteCourse = asyncWrapper(async (req, res) => {
+const deleteCourse = asyncWrapper(async (req, res, next) => {
     const parcour = await Parcour.findById(req.params.parID);
     if (!parcour) {
         const error = appError.create("Not found", 404, httpStatusText.FAIL);
