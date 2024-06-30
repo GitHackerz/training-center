@@ -58,6 +58,7 @@ const ParcoursDatatable = () => {
             },
         },
     ];
+
     return (
         <div className="datatable">
             <div className="datatableTitle">

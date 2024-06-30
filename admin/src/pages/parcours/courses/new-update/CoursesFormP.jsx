@@ -11,6 +11,7 @@ import CourseFormC from "../../../../components/forms/CourseFormC";
 const CoursesFormP = ({type = 'NEW'}) => {
     const [loading, setLoading] = useState(true)
     const {parcoursId, courseId} = useParams();
+
     const [course, setCourse] = useState({
         title: "",
         file: "",

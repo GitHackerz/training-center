@@ -28,6 +28,10 @@ const parcourSchema = new Schema({
         type: String,
         required: true
     },
+    trainer: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     startDate: {
         type: Date,
         default: Date.now()

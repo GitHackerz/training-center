@@ -25,26 +25,12 @@ const Sidebar = () => {
               <span>Users</span>
             </li>
           </Link>
-          <Link to="/modules" style={{ textDecoration: "none" }}>
-            <li>
-              <StoreIcon className="icon" />
-              <span>Modules</span>
-            </li>
-          </Link>
           <Link to="/parcours" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
               <span>Parcours</span>
             </li>
           </Link>
-        
-          <Link to="/emplois" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Emplois</span>
-            </li>
-          </Link>
-          
           <li>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>

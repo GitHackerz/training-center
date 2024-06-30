@@ -11,6 +11,12 @@ const getAllUsers = asyncWrapper(async (req, res) => {
     res.json({status: httpStatusText.SUCCESS, users})
 })
 
+const getUsersByRole = asyncWrapper(async (req, res) => {
+    const {role} = req.params;
+    const users = await User.find({role});
+    res.json({status: httpStatusText.SUCCESS, users})
+})
+
 const updateUser = asyncWrapper(async (req, res) => {
     const updated = await User.updateOne({_id: req.body._id}, {
             $set: {
@@ -131,6 +137,7 @@ const removeParcour = asyncWrapper(async (req, res, next) => {
 
 module.exports = {
     getAllUsers,
+    getUsersByRole,
     getUser,
     register,
     login,

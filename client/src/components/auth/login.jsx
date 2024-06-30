@@ -75,7 +75,7 @@ export const Login = () => {
 
                         </div>
                         <div className="mb-3"></div>
-                        <div className="d-grid">
+                        <div className="d-grid text-center">
                             <input type="submit" className="btn btn-primary" value="Login"/>
                         </div>
                     </form>

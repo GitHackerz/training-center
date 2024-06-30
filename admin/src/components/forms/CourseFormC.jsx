@@ -22,31 +22,40 @@ export default function     CourseFormC({ course, type = 'NEW', parcourId }) {
         resolver: zodResolver(parcoursSchema),
         defaultValues: course
     });
-
-    const [fileName, setFileName] = useState('');
+    const [file, setFile] = useState(null);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setFile(e.target.files[0]);
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => {
-            setFileName(file.name);
-        };
     };
 
 
     const addCourse = async (data) => {
-        await axios.post(`${ServerUrl}/parcours/${parcourId}/courses`, data);
+        await axios.post(`${ServerUrl}/parcours/${parcourId}/courses`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     };
 
     const updateCourse = async (data) => {
-        if (data.password === "" || !data.password) delete data.password;
+        if (data.file === '' || !data.file ) {
+            delete data.file;
+        }
         data._id = course._id;
-        await axios.put(`${ServerUrl}/parcours/${parcourId}/courses/${data._id}`, data);
+        await axios.put(`${ServerUrl}/parcours/${parcourId}/courses/${data._id}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+
+        });
     };
 
     const onSubmit = async (values) => {
-        values.file = fileName;
+        values.fileUpload = file;
         if (type === 'NEW') {
             await addCourse(values);
             toast.success('Course added successfully');

@@ -27,13 +27,7 @@ export const userInputs = [
         type: "password",
         placeholder: "password",
     },
-    {
-        id: 5,
-        label: "Role",
-        name: "role",
-        type: "text",
-        placeholder: "APPRENANT",
-    },
+
 ];
 
 export const parcourseInputs = [

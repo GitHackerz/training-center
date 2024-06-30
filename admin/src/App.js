@@ -35,7 +35,7 @@ function App() {
                                     />
                                     <Route
                                         path="update/:courseId"
-                                        element={<ParcoursFormP type="UPDATE"/>}
+                                        element={<CoursesFormP type="UPDATE"/>}
                                     />
                                 </Route>
                                 <Route path="users">

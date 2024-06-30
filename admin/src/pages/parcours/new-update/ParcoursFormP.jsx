@@ -17,6 +17,9 @@ const ParcoursFormP = ({type = 'NEW'}) => {
         duration: "",
         price: "",
         category: "",
+        trainer: "",
+        startDate: "",
+        endDate: "",
     })
 
     const getParcour = async () => {
@@ -29,7 +32,6 @@ const ParcoursFormP = ({type = 'NEW'}) => {
             getParcour().then(() => setLoading(false))
         else
             setLoading(false)
-
     }, []);
 
     if (!loading)

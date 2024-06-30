@@ -15,16 +15,17 @@ const userSchemaUpdate = z.object({
     password: z.string().optional().refine(value => !value || value.length >= 8, {
         message: "Password must be at least 8 characters long"
     }),
-    role: z.enum(['APPRENANT', 'ADMIN', 'CONCEPTEUR', 'FORMATEUR', 'SCOLARITE']).default('APPRENANT'),
-});
+    role: z.enum(['APPRENANT', 'FORMATEUR'], {
+        message: "Invalid role: must be one of (APPRENANT, FORMATEUR)"
+    }).default('APPRENANT'),});
 
 const userSchemaNew = z.object({
     firstName: z.string().min(1, {message: "First name is required"}),
     lastName: z.string().min(1, {message: "Last name is required"}),
     email: z.string().email({message: "Invalid email address"}),
     password: z.string().min(8, {message: "Password must be at least 8 characters long"}),
-    role: z.enum(['APPRENANT', 'ADMIN', 'CONCEPTEUR', 'FORMATEUR', 'SCOLARITE'], {
-        message: "Invalid role: must be one of (APPRENANT, ADMIN, CONCEPTEUR, FORMATEUR, SCOLARITE)     "
+    role: z.enum(['APPRENANT', 'FORMATEUR'], {
+        message: "Invalid role: must be one of (APPRENANT, FORMATEUR)"
     }).default('APPRENANT'),
 });
 
@@ -58,8 +59,7 @@ export default function UserFormC({user, type = 'NEW'}) {
         if (type === 'NEW') {
             await addUser(values)
             toast.success('User added successfully')
-        }
-        else if (type === 'UPDATE') {
+        } else if (type === 'UPDATE') {
             await updateUser(values)
             toast.success('User updated successfully')
         }
@@ -80,6 +80,15 @@ export default function UserFormC({user, type = 'NEW'}) {
                     </div>
                 ))
             }
+            <div className="formInput">
+                <label>Role</label>
+                <select {...register('role')} >
+                    <option value="">Sélectionnez votre rôle</option>
+                    <option value="APPRENANT">APPRENANT</option>
+                    <option value="FORMATEUR">FORMATEUR</option>
+                </select>
+                <p>{errors['role']?.message}</p>
+            </div>
             <button>{type === 'NEW' ? 'Create' : 'Update'}</button>
         </form>
     )

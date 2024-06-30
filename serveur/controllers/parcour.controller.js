@@ -1,7 +1,11 @@
 const Parcour = require("../models/parcours.model");
+const User = require("../models/user.model");
 const httpStatusText = require("../utils/httpStatusText");
 const asyncWrapper = require("../middleware/asyncWrapper");
 const appError = require("../utils/appError");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const getParcours = asyncWrapper(async (req, res) => {
     const parcours = await Parcour.find().populate("courses");
@@ -21,6 +25,9 @@ const addParcour = asyncWrapper(async (req, res, next) => {
         return next(error);
     }
     const newParcour = await Parcour.create(req.body);
+    const trainer = await User.findById(req.body.trainer);
+    trainer.parcours.push(newParcour._id);
+    await trainer.save();
     res
         .status(201)
         .json({status: httpStatusText.SUCCESS, parcour: newParcour});
@@ -51,6 +58,7 @@ const getCourse = asyncWrapper(async (req, res) => {
 
 const addCourse = asyncWrapper(async (req, res, next) => {
     const parcour = await Parcour.findById(req.params.parID);
+    req.body.file = req.file.filename;
     if (!parcour) {
         const error = appError.create("Not found", 404, httpStatusText.FAIL);
         return next(error);
@@ -58,6 +66,22 @@ const addCourse = asyncWrapper(async (req, res, next) => {
     parcour.courses.push(req.body);
     await parcour.save();
     res.status(201).json({status: httpStatusText.SUCCESS, parcour});
+})
+
+const updateCourse = asyncWrapper(async (req, res, next) => {
+    const parcour = await Parcour.findById(req.params.parID);
+    if (!parcour) {
+        const error = appError.create("Not found", 404, httpStatusText.FAIL);
+        return next(error);
+    }
+    const course = parcour.courses.id(req.params.courseID);
+    if (!course) {
+        const error = appError.create("Not found", 404, httpStatusText.FAIL);
+        return next(error);
+    }
+    course.set(req.body);
+    await parcour.save();
+    res.status(200).json({status: httpStatusText.SUCCESS, parcour});
 })
 
 const deleteCourse = asyncWrapper(async (req, res, next) => {
@@ -71,6 +95,18 @@ const deleteCourse = asyncWrapper(async (req, res, next) => {
     res.status(200).json({status: httpStatusText.SUCCESS, parcour});
 })
 
+const downloadCourseFile = asyncWrapper(async(req, res) => {
+    const filename = req.params.filename;
+    const filepath = path.join(__dirname, '../uploads', filename);
+    console.log(filepath)
+    res.download(filepath, (err) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(404);
+        }
+    });
+})
+
 module.exports = {
     getParcours,
     getParcour,
@@ -79,5 +115,7 @@ module.exports = {
     updateParcour,
     getCourse,
     addCourse,
-    deleteCourse
+    deleteCourse,
+    updateCourse,
+    downloadCourseFile
 }

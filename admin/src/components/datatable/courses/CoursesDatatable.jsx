@@ -34,6 +34,25 @@ const CoursesDatatable = ({parcourId}) => {
         deleteData(id)
     };
 
+    const handleDownload = async (filename) => {
+        try {
+            const response = await axios.get(`${ServerUrl}/parcours/download/${filename}`, {
+                responseType: 'blob'
+            })
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename); // or any other extension
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
     const actionColumn = [
         {
             field: "action",
@@ -42,6 +61,16 @@ const CoursesDatatable = ({parcourId}) => {
             renderCell: (params) => {
                 return (
                     <div className="cellAction">
+                        <button
+                            className="downloadButton"
+                            onClick={() => handleDownload(params.row.file)}
+                        >
+                            Download
+                        </button>
+                        <Link to={`/parcours/${parcourId}/courses/update/${params.row.id}`} className="editButton">
+                            Edit
+                        </Link>
+
                         <div
                             className="deleteButton"
                             onClick={() => handleDelete(params.row.id)}
@@ -56,10 +85,10 @@ const CoursesDatatable = ({parcourId}) => {
     return (
         <div className="datatable">
             <div className="datatableTitle">
-                    <Link to={`/parcours`} className="link-back">
-                        <span> Go back</span>
-                    </Link>
-                    List of courses for {parcour.title}
+                <Link to={`/parcours`} className="link-back">
+                <span> Go back</span>
+                </Link>
+                List of courses for {parcour.title}
                 <Link to={`/parcours/${parcourId}/courses/new`} className="link">
                     Add New
                 </Link>

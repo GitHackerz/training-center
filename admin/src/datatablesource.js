@@ -1,3 +1,6 @@
+import axios from "axios";
+import {ServerUrl} from "./config/server";
+
 const tempImage = "https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
 
 export const userColumns = [
@@ -50,15 +53,30 @@ export const parcoursColumns = [
             );
         },
     },
+
     {
         field: "startDate",
         headerName: "Start Date",
         width: 200,
+        renderCell: (params) => {
+            return (
+                <div className="cellPrice">
+                    {params.row.startDate.split("T")[0]}
+                </div>
+            );
+        }
     },
     {
         field: "endDate",
         headerName: "End Date",
         width: 200,
+        renderCell: (params) => {
+            return (
+                <div className="cellPrice">
+                    {params.row.endDate.split("T")[0]}
+                </div>
+            );
+        }
     },
 ];
 
